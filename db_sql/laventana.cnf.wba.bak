@@ -1,0 +1,5 @@
+[mysqld]
+secure_file_priv = /Users/mac_daniel/escuela/LaVentana/imagenes
+
+
+
