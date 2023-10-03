@@ -9,3 +9,6 @@ export const DB_USER = process.env.DB_USER || 'root';
 export const DB_PASSWORD = process.env.DB_PASSWORD || 'rootPassword';
 export const BUCKET_URI = process.env.BUCKET_URI
 export const BUCKET_URL = process.env.BUCKET_URL
+export const JWT_KEY = process.env.JWT_KEY
+export const SECRET_KEY = process.env.SECRET_KEY
+export const SECRET_IV = process.env.SECRET_IV

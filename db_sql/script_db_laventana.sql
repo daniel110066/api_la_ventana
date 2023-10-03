@@ -1,6 +1,14 @@
 CREATE DATABASE la_ventana;
 USE la_ventana;
 
+CREATE TABLE Admins(
+	id_admin INT auto_increment,
+    usuario_admin VARCHAR(25) not null unique,
+    clave_admin VARCHAR(250) not null,
+    super_admin bool not null default 0,
+    primary key(id_admin)
+);
+
 CREATE TABLE Proyectos(
 	id_proyecto INT auto_increment,
     nombre_proyecto VARCHAR(50) unique,
@@ -15,8 +23,6 @@ CREATE TABLE Proyectos(
     longitud DOUBLE not null,
     PRIMARY KEY(id_proyecto)
 );
-
-
 
 CREATE TABLE InfoEstados(
 	id_estado INT auto_increment,

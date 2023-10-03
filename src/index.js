@@ -2,9 +2,9 @@ import express  from "express";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 //import multer from "multer";
-import info_estado from "./route/info_estado.js"
-import proyecto from './route/proyecto.js'
-import bienvenida from './route/bienvenida.js'
+import info_estado from "./route/info_estado.js";
+import proyecto from './route/proyecto.js';
+import bienvenida from './route/bienvenida.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
