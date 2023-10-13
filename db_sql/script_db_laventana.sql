@@ -21,9 +21,13 @@ CREATE TABLE Proyectos(
     estado VARCHAR(25) not null,
     latitud DOUBLE not null,
     longitud DOUBLE not null,
+    horario_apertura_proyecto TIME,
+    horario_cierre_proyecto TIME,
     PRIMARY KEY(id_proyecto)
 );
-
+describe Proyectos;
+select * from Proyectos;
+INSERT INTO Proyectos values(0,'Prueba1','Categoria','Descripcion','url.com','https://laventa-bucket.s3.amazonaws.com/images/venezuela.png','https://laventa-bucket.s3.amazonaws.com/images/ic_input_add.png','Tipo','Estado','18.852108592','-99.21562','07:00:00');
 CREATE TABLE InfoEstados(
 	id_estado INT auto_increment,
     nombre_estado VARCHAR(25),

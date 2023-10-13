@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import { JWT_KEY } from "../config";
-import express from "espress";
+import { JWT_KEY } from "../config.js";
+import { Router } from "express";
 
-const middleware = express.Router();
+const middleware = Router();
 middleware.use((req,res,next) => {
     const token = req.headers['x-access-token']
     console.log('validando token...')

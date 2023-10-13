@@ -5,6 +5,9 @@ import cors from "cors";
 import info_estado from "./route/info_estado.js";
 import proyecto from './route/proyecto.js';
 import bienvenida from './route/bienvenida.js';
+import login from './route/login.js'
+import recordatorios from "./route/recordatorios.js";
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,7 +24,8 @@ app.use(fileUpload({
 app.use('/',bienvenida); //get
 app.use('/info_estado',info_estado); //get
 app.use('/proyecto',proyecto); //get | put | post | delete
-
+app.use('/login',login); //post
+app.use('/recordatorios', recordatorios); //get | post
 
 app.listen (port, () => {
     console.log(`servidor iniciado en el puerto ${port}`)

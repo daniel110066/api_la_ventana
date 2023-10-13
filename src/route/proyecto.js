@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { deleteFile, uploadFile } from "../controller/s3.js";
 import pool from '../db-config.js'
+import middleware from "../middleware/jwt_middleware.js";
 
 const router = Router();
 
@@ -42,6 +43,8 @@ const postProyecto = async(req,res) => {
         const estado = req.body.estado
         const latitud = req.body.latitud
         const longitud = req.body.longitud
+        const horario_apertura_proyecto = req.body.horario_apertura_proyecto
+        const horario_cierre_proyecto = req.body.horario_cierre_proyecto
 
         
         const [validName] = await pool.query(
@@ -55,9 +58,9 @@ const postProyecto = async(req,res) => {
                 if(logo_proyecto){ logo_proyecto = await uploadFile(logo_proyecto)}
                 if(imagen_proyecto){ imagen_proyecto = await uploadFile(imagen_proyecto)}
             }
-            const sql = `INSERT INTO Proyectos values(0,?,?,?,?,?,?,?,?,?,?)`; 
+            const sql = `INSERT INTO Proyectos values(0,?,?,?,?,?,?,?,?,?,?,?,?)`; 
             try {
-                const [rows,fields] = await pool.query(sql,[nombre_proyecto,categoria_proyecto,descripcion_proyecto,url_proyecto,logo_proyecto,imagen_proyecto,tipo_proyecto,estado,latitud,longitud]);
+                const [rows,fields] = await pool.query(sql,[nombre_proyecto,categoria_proyecto,descripcion_proyecto,url_proyecto,logo_proyecto,imagen_proyecto,tipo_proyecto,estado,latitud,longitud,horario_apertura_proyecto,horario_cierre_proyecto]);
             if (rows.affectedRows === 1) {
                 res.status(200).json({
                     mensaje: `proyecto agregado`,
@@ -115,20 +118,20 @@ const putProyecto = async(req,res) => {
             const url_proyecto = req.body.url_proyecto
             await pool.query(`UPDATE Proyectos SET url_proyecto = ? WHERE id_proyecto = ?`,[url_proyecto,id_proyecto])
         }
-        if(req.files.logo){
+        if(req.files){
+            if(req.files.logo != null){
                 var logo_proyecto = img[0].logo_proyecto
                 if(logo_proyecto){ await deleteFile(logo_proyecto)}
-                    logo_proyecto = await uploadFile(req.files.logo)
+                logo_proyecto = await uploadFile(req.files.logo)
                 await pool.query(`UPDATE Proyectos SET logo_proyecto = ? WHERE id_proyecto = ?`,[logo_proyecto,id_proyecto])
-        }
-        if(req.files.imagen){
+            }
+            if(req.files.imagen != null){
                 var imagen_proyecto = img[0].imagen_proyecto
                 if(imagen_proyecto){await deleteFile(imagen_proyecto)}
                 imagen_proyecto = await uploadFile(req.files.imagen)
-                await pool.query(`UPDATE Proyectos SET imagen_proyecto = ? WHERE id_proyecto = ?`,[imagen_proyecto,id_proyecto])
-            
-            
-        }else{console.log("no imagen")}
+                await pool.query(`UPDATE Proyectos SET imagen_proyecto = ? WHERE id_proyecto = ?`,[imagen_proyecto,id_proyecto])  
+            }
+        }
         if(req.body.tipo_proyecto){
             const tipo_proyecto = req.body.tipo_proyecto
             await pool.query(`UPDATE Proyectos SET tipo_proyecto = ? WHERE id_proyecto = ?`,[tipo_proyecto,id_proyecto])
@@ -144,6 +147,14 @@ const putProyecto = async(req,res) => {
         if(req.body.longitud){
             const longitud = req.body.longitud
             await pool.query(`UPDATE Proyectos SET longitud = ? WHERE id_proyecto = ?`,[longitud,id_proyecto])
+        }
+        if(req.body.horario_apertura_proyecto){
+            const horario_apertura_proyecto = req.body.horario_apertura_proyecto
+            await pool.query(`UPDATE Proyectos SET horario_apertura_proyecto = ? WHERE id_proyecto = ?`,[horario_apertura_proyecto,id_proyecto])
+        }
+        if(req.body.horario_cierre_proyecto){
+            const horario_cierre_proyecto = req.body.horario_cierre_proyecto
+            await pool.query(`UPDATE Proyectos SET horario_apertura_proyecto = ? WHERE id_proyecto = ?`,[horario_cierre_proyecto,id_proyecto])
         }
         res.status(200).json({
             mensaje: mensaje
@@ -171,7 +182,7 @@ const deleteProyecto = async(req,res) => {
 
 router.get("/:id_or_name", getProyecto);
 router.get("/", getProyectos);
-router.post("/", postProyecto);
-router.put("/:id_proyecto", putProyecto);
-router.delete("/:id_proyecto", deleteProyecto);
+router.post("/", middleware, postProyecto);
+router.put("/:id_proyecto", middleware, putProyecto);
+router.delete("/:id_proyecto", middleware, deleteProyecto);
 export default router;
