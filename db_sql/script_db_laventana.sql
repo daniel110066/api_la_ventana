@@ -9,6 +9,25 @@ CREATE TABLE Admins(
     primary key(id_admin)
 );
 
+CREATE TABLE Categorias(
+	categoria varchar(25),
+    primary key(categoria)
+);
+insert into Categorias values
+	("Importante"),
+    ("Útil"),
+    ("Irrelevante"),
+    ("Casual");
+    
+CREATE TABLE Recordatorios(
+	id_recordatorio int auto_increment,
+    nombre_recordatorio VARCHAR(50),
+    info_recordatorio TEXT,
+    categoria_recordatorio varchar(25) default "Irrelevante",
+    primary key(id_recordatorio),
+    foreign key(categoria_recordatorio) references Categorias(categoria)
+);
+
 CREATE TABLE Proyectos(
 	id_proyecto INT auto_increment,
     nombre_proyecto VARCHAR(50) unique,
